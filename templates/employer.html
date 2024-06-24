@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employer Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f9;
+        }
+        /* .navbar-custom {
+            background-color: rgba(116, 88, 88, 0.8);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: rgb(246, 186, 186) !important;
+        } */
+        .navbar-custom {
+            background-color: rgba(169, 92, 92, 0.8);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: rgb(243, 239, 239) !important;
+            font-size:large;
+        }
+        .navbar-nav .nav-link {
+            background-color: rgb(246, 186, 186);
+            border-radius: 5px;
+            margin: 0 5px;
+            color: #464545 !important; /* Change text color to contrast with background */
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: rgb(255, 150, 150);
+        }
+        .navbar-nav .nav-link i {
+            margin-right: 8px;
+        }
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 56px); /* Subtracting navbar height */
+            text-align: center;
+        }
+        .center-content h1, .center-content h2 {
+            margin-bottom: 20px;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .options-list li {
+            margin-bottom: 15px;
+        }
+        .options-list li a {
+            display: block;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            width: 250px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .options-list li a:hover {
+            background-color: #0056b3;
+        }
+        li{
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <b><a class="navbar-brand" href="/">Employer Dashboard</a></b>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- <li class="nav-item"> -->
+                        <!-- <a class="btn btn-outline-light" href="/">Logout</a> -->
+                    <!-- </li>
+                     <li class="nav-item"><a class="btn btn-outline-light" href="/listJobs">List all jobs</a></li> -->
+                    <!-- <li><a th:href="@{/employerProfile}">Profile</a></li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/listAllJobs"></i>List All jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/employerProfile}"><i class="fas fa-user"></i>Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+
+
+                    
+                </ul>
+            </div>
+        </nav>
+        <h3 th:text="${message}"></h3>
+        <!-- <p th:text ="${email}"></p> -->
+        <!-- <p th:text="${#session.getAttribute('email')}"></p> -->
+        <p>Welcome to your Dashboard</p>
+        <div class="center-content">    
+            <h2>Your Options:</h2>
+
+            <ul class="options-list">
+                <!-- <li><a th:href="@{/addJob(email=${#session.getAttribute('email')})}">Add a Job</a></li>
+                <li><a th:href="@{/addJob(email=${email})}">Add a Job</a></li>
+                 <li><a th:href="@{/listJobs(email=${email})}">List your Jobs</a></li> --> 
+                <li><a href="/addJob">Add job</a></li>
+                <li><a href="/listJobs">List My Jobs</a></li>
+            </ul>
+
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
+ 
+ </body>
+</html>

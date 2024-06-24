@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+   
+    <title>All Jobs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-custom {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .navbar-brand {
+            color: rgb(226, 218, 218) !important;
+        }
+        .navbar-nav .nav-link {
+            color: rgb(247, 243, 243) !important;
+            
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-container {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .job-container h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+
+        .job-container p {
+            margin: 5px 0;
+            font-size: 1em;
+        }
+
+        .job-buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .job-buttons form,
+        .job-buttons a {
+            margin-right: 10px;
+        }
+
+        .job-buttons button,
+        .job-buttons a {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;           
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .job-container button:hover {
+            background-color: #50f258;
+        }
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .popup button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #45a049;
+        }
+        li{
+            padding-left: 20px;
+        }
+    </style>
+    <script>
+        function showPopup() {
+            var overlay = document.getElementById('popup-overlay');
+            var popup = document.getElementById('popup');
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+        }
+
+        function hidePopup() {
+            var overlay = document.getElementById('popup-overlay');
+            var popup = document.getElementById('popup');
+            overlay.style.display = 'none';
+            popup.style.display = 'none';
+            window.location.href = "/listJobsForJobseeker"; // Redirect to job list after closing popup
+        }
+
+        // Automatically show popup if message exists
+        window.onload = function() {
+            if (document.getElementById("popup").getAttribute("data-show") === "true") {
+                showPopup();
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <a class="navbar-brand" href="/">JobSeeker Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li></li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-light" href="/jobseekerdashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-light" href="/">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>All Jobs</h1>
+        <div th:each="job : ${jobs}" class="job-container">
+            <h2 th:text="${job.title}">Job Title</h2>
+            <p><strong>Description:</strong> <span th:text="${job.description}">Job Description</span></p>
+            <p><strong>Location:</strong> <span th:text="${job.location}">Job Location</span></p>
+            <p><strong>Salary:</strong> <span th:text="${job.salary}">Job Salary</span></p>
+            <p><strong>Skills:</strong> <span th:text="${job.skills}">Required skills</span></p>
+
+            <div class="job-buttons">
+                <form th:action="@{/applyJob/{id}(id=${job.id})}" method="get">
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="popup" class="popup" th:attr="data-show=${message != null}">
+        <h2>Message</h2>
+        <p>Application is recieved.</p>
+        <p> we will contact through given Email</p>
+        <button onclick="hidePopup()">Close</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

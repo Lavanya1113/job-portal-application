@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+   
+   <style>
+        /* .navbar-custom {
+            background-color: rgba(180, 114, 114, 0.5);
+        }
+        .navbar-brand {
+            color: white !important;
+        }
+        .navbar-nav .nav-link {
+            color: white !important;
+        } */
+        .navbar-custom {
+            background-color: rgba(169, 92, 92, 0.8);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: rgb(243, 239, 239) !important;
+            font-size:larger;
+        }
+        .navbar-nav .nav-link {
+            background-color: rgb(246, 186, 186);
+            border-radius: 5px;
+            margin: 0 5px;
+            color: #464545 !important; /* Change text color to contrast with background */
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: rgb(255, 150, 150);
+        }
+        .navbar-nav .nav-link i {
+            margin-right: 8px;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            padding-left: 50px;
+            padding-right: 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .popup button {
+            margin-top: 20px;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        li{
+            padding-left: 20px;
+        }
+
+    </style>
+    <script>
+        function showPopup() {
+            var popup = document.getElementById("popup");
+            var overlay = document.getElementById("popup-overlay");
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        }
+
+        function hidePopup() {
+            var popup = document.getElementById("popup");
+            var overlay = document.getElementById("popup-overlay");
+            popup.style.display = "none";
+            overlay.style.display = "none";
+        }
+
+        window.onload = function() {
+            if (document.getElementById("popup").getAttribute("data-show") === "true") {
+                showPopup();
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <a class="navbar-brand" href="/">Job Portal Platform</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="bi bi-house-door"></i>Home</a>
+                </li>
+                <li></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">SignUp</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="center-content">
+        <div class="form-container">
+            <h1>Login Form </h1>
+            <form action="/login" th:object="${loginForm}" method="post">
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" name="email" class="form-control" th:field="*{email}" />
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" name="password" class="form-control" th:field="*{password}" />
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Role:</label>
+                    <select name="role" class="form-control" th:field="*{role}">
+                        <option value="employer">Recruiter</option>
+                        <option value="jobseeker">Jobseeker</option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-danger"></span>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="popup" class="popup" th:attr="data-show=${error != null}">
+        <h2>Info</h2>
+        <p th:text="${error}">error</p>
+        <button onclick="hidePopup()">Close</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

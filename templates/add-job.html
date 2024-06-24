@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Job</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+   
+   <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        /* .navbar-custom {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white !important;
+        } */
+        .navbar-custom {
+            background-color: rgba(169, 92, 92, 0.8);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: rgb(243, 239, 239) !important;
+            font-size:large;
+        }
+        .navbar-nav .nav-link {
+            background-color: rgb(246, 186, 186);
+            border-radius: 5px;
+            margin: 0 5px;
+            color: #464545 !important; /* Change text color to contrast with background */
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: rgb(255, 150, 150);
+        }
+        .navbar-nav .nav-link i {
+            margin-right: 8px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* height: calc(100vh - 80px); Subtracting navbar height */
+            text-align: center;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        .form-container h1 {
+            margin-bottom: 30px;
+        }
+        .form-container .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .popup button {
+            margin-top: 20px;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        li{
+            padding-left: 20px;
+        }
+
+    </style>
+    <script>
+        function showPopup() {
+            var popup = document.getElementById("popup");
+            var overlay = document.getElementById("popup-overlay");
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        }
+
+        function hidePopup() {
+            document.getElementById('popup-overlay').style.display = 'none';
+            document.getElementById('add-job-form').reset();
+            var popup = document.getElementById("popup");
+            popup.style.display = "none";
+        }
+
+        window.onload = function() {
+            if (document.getElementById("popup").getAttribute("data-show") === "true") {
+                showPopup();
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <a class="navbar-brand" href="/">Employer Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li></li>
+              
+                <li class="nav-item">
+                    <a class="nav-link" href="/employerdashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="form-container">
+            <h1>Add Job</h1>
+            <form th:action="@{/addJob}" th:object="${job}" method="post" id="add-job-form">
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{employerId}"/>
+                <input type="hidden" th:field="*{employerEmail}" /> <!-- Hidden field for employerEmail -->
+
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" class="form-control" th:field="*{title}" />
+                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger">Title Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" class="form-control" th:field="*{description}"></textarea>
+                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">Description Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" class="form-control" th:field="*{location}" />
+                    <div th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="text-danger">Location Error</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="salary">Salary:</label>
+                    <input type="number" id="salary" class="form-control" th:field="*{salary}" />
+                    <div th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}" class="text-danger">Salary Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="salary">Skills:</label>
+                    <input type="text" id="skills" class="form-control" th:field="*{skills}" />
+                    <div th:if="${#fields.hasErrors('skills')}" th:errors="*{skills}" class="text-danger">Salary Error</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Add Job</button>
+            </form>
+        </div>
+    </div>
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="popup" class="popup" th:attr="data-show=${message != null}">
+        <h2>Info</h2>
+        <p th:text="${message}">Job added successfully!</p>
+        <button onclick="hidePopup()">Close</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
